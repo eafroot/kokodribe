@@ -122,7 +122,7 @@ nav{
 .mv{font-size:20px; font-weight:900; letter-spacing:-0.5px; line-height:1; margin-bottom:4px; color: var(--text);}
 .ml{font-size:10px; font-weight:700; letter-spacing:0.8px; color:var(--sub); text-transform:uppercase;}
 .sec{position:relative; z-index:10; padding:12px 20px 14px;}
-.sec-t{font-size:21px; font-weight:900; letter-spacing:-0.5px; color:var(--text);}
+.sec-t{font-size:21px; font-weight:900; letter-spacing:-0.5px; color:var(--text); margin-bottom: 16px;}
 .segmented-control-container {
   position: relative; z-index: 10; margin: 0 20px 24px;
   background: rgba(255, 255, 255, 0.08); border: 1px solid var(--gborder-sub);
@@ -284,8 +284,17 @@ footer{ position:relative; z-index:10; text-align:center; padding:24px 20px calc
   </div>
 </section>
 
+<div class="segmented-control-container" id="tabs">
+  <div class="tab-slider" id="slider"></div>
+  <div class="tab on" data-f="all">Todo</div>
+  <div class="tab" data-f="premium">Premium</div>
+  <div class="tab" data-f="nuevo">Nuevo</div>
+  <div class="tab" data-f="beta">Beta</div>
+</div>
+
 <div class="grid" id="grid"></div>
 <div id="toast"><span class="td"></span><span id="tmsg"></span></div>
+
 <script>
 const APPS = [
   {n:'KoKo',     c:'Extra',           v:'v1.7.117', i:'logos/koko.png',      f:'KoKo.apk',      t:'premium'},
@@ -297,9 +306,11 @@ const CL = {premium:'cp',beta:'cb',nuevo:'cn'};
 const GL = {premium:'gp',beta:'gb',nuevo:'gn'};
 const TL = {premium:'Premium',beta:'Beta',nuevo:'Nuevo'};
 let filt = 'all';
+
 function mkCard(app, i){
   const a = document.createElement('a');
-  a.href = app.f; a.download = '';
+  a.href = app.f; 
+  a.download = app.f;
   a.className = 'card';
   a.style.animationDelay = i*0.05+'s';
   const fb = 'https://ui-avatars.com/api/?name='+encodeURIComponent(app.n)+'&background=1e293b&color=38bdf8&bold=true&size=120';
@@ -312,18 +323,32 @@ function mkCard(app, i){
     '<div class="app-name">'+app.n+'</div>'+
     '<div class="app-cat">'+app.c+' · '+app.v+'</div>'+
     '<button class="btn">'+
-      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'+
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> '+
       'Obtener'+
     '</button>';
+
+  // CÓDIGO CORREGIDO PARA DESCARGA
   a.addEventListener('click', (e)=>{
     e.preventDefault();
     toast('Preparando descarga de '+app.n+'…');
-    setTimeout(() => { window.location.href = app.f; }, 400);
+    
+    setTimeout(() => { 
+      const downloader = document.createElement('a');
+      downloader.href = app.f;
+      downloader.download = app.f;
+      downloader.style.display = 'none';
+      document.body.appendChild(downloader);
+      downloader.click();
+      document.body.removeChild(downloader);
+    }, 400);
   });
+  
   return a;
 }
+
 const grid = document.getElementById('grid');
 const cnt  = document.getElementById('cnt');
+
 function render(){
   grid.innerHTML = '';
   const list = APPS.filter(a=>(filt==='all'||a.t===filt));
@@ -338,30 +363,43 @@ function render(){
   list.forEach((app,i)=>grid.appendChild(mkCard(app,i)));
 }
 render();
+
 const tabsContainer = document.getElementById('tabs');
 const slider = document.getElementById('slider');
+
 function updateTabSlider(activeTab) {
+  if(!tabsContainer || !slider) return;
   const containerRect = tabsContainer.getBoundingClientRect();
   const tabRect = activeTab.getBoundingClientRect();
   slider.style.width = tabRect.width + 'px';
   slider.style.left = (tabRect.left - containerRect.left) + 'px';
 }
+
 setTimeout(() => {
-  const activeTab = tabsContainer.querySelector('.tab.on');
-  if(activeTab) updateTabSlider(activeTab);
+  if(tabsContainer) {
+    const activeTab = tabsContainer.querySelector('.tab.on');
+    if(activeTab) updateTabSlider(activeTab);
+  }
 }, 100);
-tabsContainer.addEventListener('click', e => {
-  const t = e.target.closest('.tab'); if(!t) return;
-  document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-  updateTabSlider(t);
-  filt = t.dataset.f;
-  render();
-});
+
+if(tabsContainer){
+  tabsContainer.addEventListener('click', e => {
+    const t = e.target.closest('.tab'); if(!t) return;
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    updateTabSlider(t);
+    filt = t.dataset.f;
+    render();
+  });
+}
+
 window.addEventListener('resize', () => {
-  const activeTab = tabsContainer.querySelector('.tab.on');
-  if(activeTab) updateTabSlider(activeTab);
+  if(tabsContainer){
+    const activeTab = tabsContainer.querySelector('.tab.on');
+    if(activeTab) updateTabSlider(activeTab);
+  }
 });
+
 let tt;
 function toast(msg){
   const el = document.getElementById('toast');
