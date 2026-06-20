@@ -1,357 +1,515 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#0a0b16">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Aura Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0D0A12">
+<meta name="description" content="Descarga KoKo para Android. Diseño Material, fluida y ligera.">
+<title>KoKo · Descarga para Android</title>
+
+<!-- Logo de la app como favicon en la pestaña del navegador -->
+<link rel="icon" type="image/png" href="/Logos/koko.png">
+<link rel="apple-touch-icon" href="/Logos/koko.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-:root{
-  --bg:#0a0b16;
-  --cyan:#38bdf8;
-  --blue:#0084ff;
-  --violet:#818cf8;
-  --mint:#34d399;
-  --amber:#ff7a33;
-  --text:#ffffff;
-  --sub:rgba(255,255,255,.66);
-  --faint:rgba(255,255,255,.36);
-  --glass:rgba(255,255,255,.07);
-  --glass-strong:rgba(255,255,255,.12);
-  --nav:rgba(10,11,22,.55);
-  --bd:rgba(255,255,255,.12);
-  --bd-strong:rgba(255,255,255,.3);
-  --r-card:24px;
-  --r-icon:19px;
-  --r-pill:50px;
-  --spring:cubic-bezier(.34,1.56,.64,1);
-  --ease:cubic-bezier(.25,1,.5,1);
-  --blur:blur(28px) saturate(200%);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Figtree',-apple-system,BlinkMacSystemFont,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  min-height:100dvh;
-  -webkit-font-smoothing:antialiased;
-}
-.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
-.blob{position:absolute;border-radius:50%;filter:blur(75px);opacity:.5;will-change:transform;}
-.blob-1{top:-12%;left:-14%;width:72vw;height:72vw;background:radial-gradient(circle,#6d28d9,#2e1065 70%);animation:drift 26s infinite alternate ease-in-out;}
-.blob-2{bottom:-16%;right:-12%;width:78vw;height:78vw;background:radial-gradient(circle,#0369a1,#082f49 70%);animation:drift 32s infinite alternate-reverse ease-in-out;}
-.blob-3{top:34%;right:-18%;width:54vw;height:54vw;background:radial-gradient(circle,#be185d,#4c0519 70%);opacity:.38;animation:drift 22s infinite alternate ease-in-out;}
-.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-@keyframes drift{0%{transform:translate(0,0) scale(1);}100%{transform:translate(6%,9%) scale(1.1);}}
-nav{
-  position:sticky;top:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;padding-top:env(safe-area-inset-top);
-  height:calc(62px + env(safe-area-inset-top));
-  background:var(--nav);
-  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;}
-.logo-mark{
-  width:34px;height:34px;border-radius:11px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--blue),var(--cyan));
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(0,132,255,.45),inset 0 1px 1px rgba(255,255,255,.55);
-}
-.logo-mark svg{width:16px;height:16px;}
-.logo-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-.4px;}
-.nav-pill{
-  display:flex;align-items:center;gap:7px;
-  font-size:11.5px;font-weight:700;color:var(--sub);
-  background:var(--glass);border:1px solid var(--bd);
-  padding:6px 13px;border-radius:var(--r-pill);
-}
-.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.85);}}
-.hero{position:relative;z-index:10;padding:40px 20px 26px;max-width:760px;}
-.hero h1{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;
-  font-size:clamp(38px,9.5vw,58px);line-height:1.02;letter-spacing:-2px;margin-bottom:16px;
-}
-.hero h1 .grad{background:linear-gradient(110deg,var(--cyan) 0%,var(--violet) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-.metrics{
-  display:flex;max-width:380px;border-radius:18px;overflow:hidden;
-  background:var(--glass);border:1px solid var(--bd);
-  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  box-shadow:0 14px 34px rgba(0,0,0,.3);
-}
-.m{flex:1;padding:15px 8px;text-align:center;position:relative;}
-.m+.m::before{content:'';position:absolute;left:0;top:24%;height:52%;width:1px;background:var(--bd);}
-.mv{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.5px;line-height:1;margin-bottom:5px;}
-.ml{font-size:9.5px;font-weight:700;letter-spacing:.8px;color:var(--faint);text-transform:uppercase;}
-.toolbar{position:relative;z-index:10;padding:6px 20px 0;max-width:760px;}
-.search{
-  display:flex;align-items:center;gap:11px;
-  background:var(--glass);border:1px solid var(--bd);
-  border-radius:16px;padding:0 15px;height:50px;
-  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  transition:border-color .25s,box-shadow .25s,background .25s;
-}
-.search:focus-within{border-color:rgba(56,189,248,.6);background:rgba(255,255,255,.1);box-shadow:0 0 0 4px rgba(56,189,248,.12);}
-.search svg{width:18px;height:18px;color:var(--faint);flex-shrink:0;transition:color .25s;}
-.search:focus-within svg{color:var(--cyan);}
-.search input{flex:1;background:none;border:none;outline:none;font-family:inherit;font-size:15px;font-weight:500;color:var(--text);}
-.search input::placeholder{color:var(--faint);}
-.search-clear{
-  width:22px;height:22px;border-radius:50%;border:none;flex-shrink:0;cursor:pointer;
-  background:var(--glass-strong);color:var(--sub);
-  display:none;align-items:center;justify-content:center;font-size:14px;line-height:1;
-}
-.search-clear.on{display:flex;}
-.grid{
-  position:relative;z-index:10;
-  display:grid;grid-template-columns:1fr 1fr;gap:14px;
-  padding:22px 16px calc(40px + env(safe-area-inset-bottom));
-  max-width:760px;
-}
-@media(min-width:520px){.grid{grid-template-columns:repeat(3,1fr);gap:16px;}}
-@media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr);}}
-.card{
-  position:relative;border-radius:var(--r-card);
-  background:var(--glass-strong);border:1px solid var(--bd-strong);
-  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  padding:24px 14px 18px;
-  display:flex;flex-direction:column;align-items:center;
-  text-decoration:none;color:inherit;cursor:pointer;overflow:hidden;
-  box-shadow:0 12px 30px rgba(0,0,0,.32),inset 0 1px 2px rgba(255,255,255,.22);
-  opacity:0;transform:translateY(26px) scale(.97);
-  animation:rise .6s var(--spring) forwards;
-  transition:transform .3s var(--spring),border-color .3s,box-shadow .3s,background .3s;
-}
-.card::before{
-  content:'';position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
-  opacity:0;transition:opacity .4s;
-  background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%),rgba(120,180,255,.28),transparent 60%);
-}
-.card:hover::before,.card.lit::before{opacity:1;}
-@keyframes rise{to{opacity:1;transform:translateY(0) scale(1);}}
-@media(hover:hover){
-  .card:hover{
-    transform:translateY(-7px) scale(1.025);
-    border-color:rgba(255,255,255,.6);
-    box-shadow:0 24px 50px rgba(0,0,0,.45),inset 0 1px 3px rgba(255,255,255,.45);
+  :root{
+    --bg:#0D0A12;
+    --bg-2:#120D18;
+    --surface:#181221;
+    --surface-hi:#1F1729;
+    --surface-hi2:#271C34;
+    --outline:rgba(216,196,255,.12);
+    --outline-strong:rgba(216,196,255,.22);
+
+    --primary:#C9A6FF;
+    --primary-strong:#B388FF;
+    --secondary:#FF9CC0;
+    --tertiary:#8AD9D5;
+
+    --on:#F3ECFB;
+    --on-muted:#B7A8C9;
+    --on-dim:#8A7C9C;
+
+    --ok:#7EE0B8;
+    --err:#FF9DA3;
+
+    --grad:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+    --r-lg:32px; --r-md:24px; --r-sm:16px; --r-pill:999px;
+    --ease:cubic-bezier(.2,.8,.2,1);
+    --shadow:0 24px 60px -20px rgba(0,0,0,.7);
   }
-}
-@media(hover:none){
-  .card:active{transform:scale(.95);background:rgba(255,255,255,.18);}
-}
-.card>*{position:relative;z-index:1;}
-.chip{
-  position:absolute;top:12px;right:12px;z-index:2;
-  font-size:8.5px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;
-  padding:3px 8px;border-radius:var(--r-pill);
-}
-.cp{background:rgba(255,122,51,.2);color:var(--amber);border:1px solid rgba(255,122,51,.4);}
-.cb{background:rgba(129,140,248,.2);color:var(--violet);border:1px solid rgba(129,140,248,.4);}
-.cn{background:rgba(52,211,153,.2);color:var(--mint);border:1px solid rgba(52,211,153,.4);}
-.icon-wrap{position:relative;width:72px;height:72px;margin-bottom:14px;}
-.icon-glow{position:absolute;inset:-9px;border-radius:24px;opacity:.22;filter:blur(13px);transition:opacity .4s,transform .4s;}
-.card:hover .icon-glow{opacity:.55;transform:scale(1.08);}
-.gp{background:var(--amber);}
-.gb{background:var(--violet);}
-.gn{background:var(--mint);}
-.app-icon{
-  width:72px;height:72px;border-radius:var(--r-icon);object-fit:cover;
-  background:linear-gradient(135deg,#1e293b,#0f172a);
-  display:block;position:relative;z-index:1;
-  box-shadow:0 6px 16px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.2);
-  transition:transform .4s var(--spring);
-}
-.card:hover .app-icon{transform:scale(1.07) translateY(-2px);}
-.app-name{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:15px;font-weight:600;letter-spacing:-.3px;text-align:center;margin-bottom:4px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
-}
-.app-cat{
-  font-size:11.5px;font-weight:500;color:var(--sub);text-align:center;margin-bottom:15px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
-}
-.btn{
-  position:relative;overflow:hidden;width:100%;margin-top:auto;
-  padding:10px 0;border-radius:var(--r-pill);
-  font-family:inherit;font-size:12.5px;font-weight:800;
-  border:1px solid var(--bd-strong);background:rgba(255,255,255,.14);color:var(--cyan);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  box-shadow:0 4px 10px rgba(0,0,0,.15);
-  transition:background .3s,color .3s,border-color .3s,box-shadow .3s,transform .2s;
-}
-.btn svg{width:12px;height:12px;}
-.btn::after{
-  content:'';position:absolute;top:0;left:-90%;width:45%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
-  transition:left .6s ease;pointer-events:none;
-}
-.card:hover .btn::after{left:150%;}
-.card:hover .btn{background:var(--text);color:#0a0b16;border-color:transparent;box-shadow:0 6px 18px rgba(255,255,255,.28);}
-.btn:active{transform:scale(.96);}
-.nores{
-  grid-column:1/-1;padding:64px 20px;text-align:center;color:var(--sub);
-  font-size:15px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:12px;
-  animation:rise .4s ease forwards;
-}
-.nores b{color:var(--text);font-weight:700;}
-#toast{
-  position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;
-  transform:translateX(-50%) translateY(90px);z-index:999;
-  background:rgba(16,18,38,.86);border:1px solid var(--bd-strong);
-  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-  border-radius:var(--r-pill);padding:12px 22px;
-  display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:#fff;
-  white-space:nowrap;box-shadow:0 16px 38px rgba(0,0,0,.45);
-  transition:transform .45s var(--spring),opacity .25s ease;opacity:0;
-}
-#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.td{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint);animation:pulse 1s ease-in-out infinite;}
-footer{position:relative;z-index:10;text-align:center;padding:20px 20px calc(30px + env(safe-area-inset-bottom));}
-.f-inner{max-width:760px;margin:0 auto;border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;flex-direction:column;align-items:center;gap:5px;}
-.f-logo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--sub);}
-.f-copy{font-size:11.5px;color:var(--faint);font-weight:500;}
-a:focus-visible,button:focus-visible,input:focus-visible,.tab:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px;}
-@media(prefers-reduced-motion:reduce){
-  *{animation-duration:.001s !important;transition-duration:.001s !important;}
-  .card{opacity:1;transform:none;}
-}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--on);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  /* ---------- Fondo vivo (Material You dynamic color) ---------- */
+  .field{position:fixed;inset:0;z-index:-1;overflow:hidden;background:
+    radial-gradient(120% 90% at 50% -10%, var(--bg-2), var(--bg) 60%);}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45;will-change:transform}
+  .blob.b1{width:48vw;height:48vw;background:#7A4FCF;top:-12vw;left:-8vw;animation:drift1 22s var(--ease) infinite alternate}
+  .blob.b2{width:42vw;height:42vw;background:#D45A8E;bottom:-14vw;right:-10vw;animation:drift2 26s var(--ease) infinite alternate}
+  .blob.b3{width:34vw;height:34vw;background:#3E8E8A;top:38%;left:40%;opacity:.3;animation:drift3 30s var(--ease) infinite alternate}
+  @keyframes drift1{to{transform:translate(8vw,6vh) scale(1.15)}}
+  @keyframes drift2{to{transform:translate(-7vw,-5vh) scale(1.1)}}
+  @keyframes drift3{to{transform:translate(-10vw,8vh) scale(.85)}}
+  .grain{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- Layout base ---------- */
+  .wrap{width:min(1120px,92vw);margin:0 auto}
+
+  /* ---------- Nav ---------- */
+  .nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:rgba(13,10,18,.55);border-bottom:1px solid transparent;transition:border-color .3s}
+  .nav.scrolled{border-bottom-color:var(--outline)}
+  .nav__in{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+  .brand{display:flex;align-items:center;gap:12px;font-family:'Outfit';font-weight:700;font-size:1.25rem;letter-spacing:-.01em}
+  .brand .mark{width:38px;height:38px;border-radius:12px;object-fit:cover;
+    box-shadow:0 6px 18px -6px rgba(178,136,255,.7)}
+  .brand .mark-fallback{display:none;width:38px;height:38px;border-radius:12px;background:var(--grad);
+    align-items:center;justify-content:center;font-weight:800;color:#1a0f25;font-size:1.1rem}
+  .nav__cta{font-family:'Outfit';font-weight:600;font-size:.95rem;color:var(--on);
+    text-decoration:none;padding:9px 20px;border-radius:var(--r-pill);
+    border:1px solid var(--outline-strong);transition:.25s var(--ease)}
+  .nav__cta:hover{background:rgba(201,166,255,.12);border-color:var(--primary)}
+
+  /* ---------- Hero ---------- */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;
+    padding:clamp(48px,9vw,110px) 0 clamp(60px,8vw,90px)}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:'Outfit';font-weight:500;
+    font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--primary);
+    padding:7px 16px;border-radius:var(--r-pill);background:rgba(201,166,255,.1);
+    border:1px solid var(--outline)}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+
+  h1{font-family:'Outfit';font-weight:800;font-size:clamp(3.4rem,9vw,6rem);line-height:.95;
+    letter-spacing:-.03em;margin:22px 0 0}
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:clamp(1.05rem,2.2vw,1.25rem);color:var(--on-muted);max-width:30ch;margin:22px 0 34px}
+
+  /* Tarjeta de descarga (la firma) */
+  .dl-card{background:linear-gradient(180deg,var(--surface-hi),var(--surface));
+    border:1px solid var(--outline);border-radius:var(--r-md);padding:24px;max-width:440px;
+    box-shadow:var(--shadow)}
+  .dl-btn{position:relative;overflow:hidden;width:100%;border:none;cursor:pointer;
+    font-family:'Outfit';font-weight:700;font-size:1.1rem;color:#23103a;
+    background:var(--grad);border-radius:var(--r-pill);padding:18px 24px;
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    transition:transform .2s var(--ease),box-shadow .3s var(--ease),filter .3s;
+    box-shadow:0 14px 34px -12px rgba(255,156,192,.6)}
+  .dl-btn:hover{transform:translateY(-2px);box-shadow:0 20px 44px -12px rgba(255,156,192,.75)}
+  .dl-btn:active{transform:translateY(0) scale(.99)}
+  .dl-btn:disabled{filter:saturate(.5) brightness(.8);cursor:wait;transform:none;box-shadow:none}
+  .dl-btn svg{width:22px;height:22px;flex:0 0 auto}
+  .dl-btn .prog{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(255,255,255,.28);transition:width .25s linear}
+  .ripple{position:absolute;border-radius:50%;background:rgba(35,16,58,.35);
+    transform:scale(0);animation:rip .6s var(--ease);pointer-events:none}
+  @keyframes rip{to{transform:scale(2.6);opacity:0}}
+
+  .status{display:flex;align-items:center;gap:11px;margin-top:16px;font-size:.92rem;
+    color:var(--on-muted);min-height:24px}
+  .status .ind{width:18px;height:18px;flex:0 0 auto;display:grid;place-items:center}
+  .status .spin{width:16px;height:16px;border:2px solid var(--outline-strong);
+    border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .status .check{color:var(--ok)} .status .bad{color:var(--err)}
+  .status.is-ok{color:var(--on)} .status.is-bad{color:var(--err)}
+
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .chip{font-family:'Outfit';font-weight:500;font-size:.8rem;color:var(--on-muted);
+    padding:6px 13px;border-radius:var(--r-pill);background:var(--surface-hi2);
+    border:1px solid var(--outline);display:inline-flex;align-items:center;gap:7px}
+  .chip svg{width:14px;height:14px;opacity:.8}
+
+  /* Mockup de teléfono */
+  .device-stage{display:flex;justify-content:center;align-items:center;position:relative}
+  .device{width:min(280px,72vw);aspect-ratio:9/19;border-radius:46px;
+    background:linear-gradient(160deg,#2a2036,#15101d);padding:13px;
+    border:1px solid var(--outline-strong);box-shadow:var(--shadow),0 0 0 8px rgba(201,166,255,.04);
+    animation:float 6s var(--ease) infinite alternate}
+  @keyframes float{to{transform:translateY(-16px)}}
+  .screen{width:100%;height:100%;border-radius:34px;overflow:hidden;position:relative;
+    background:radial-gradient(120% 80% at 50% 0%,#241a32,#120d1a);display:flex;flex-direction:column}
+  .screen .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);
+    width:74px;height:7px;border-radius:99px;background:rgba(0,0,0,.5);z-index:3}
+  .screen .top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+  .app-icon{width:104px;height:104px;border-radius:28px;object-fit:cover;
+    box-shadow:0 20px 50px -14px rgba(178,136,255,.8);animation:pulse 4s var(--ease) infinite}
+  .app-icon-fallback{display:none;width:104px;height:104px;border-radius:28px;background:var(--grad);
+    align-items:center;justify-content:center;font-family:'Outfit';font-weight:800;font-size:3rem;color:#23103a}
+  @keyframes pulse{50%{transform:scale(1.05)}}
+  .screen .app-name{font-family:'Outfit';font-weight:700;font-size:1.5rem;letter-spacing:-.01em}
+  .dock{display:flex;justify-content:center;gap:14px;padding:0 0 24px}
+  .dock span{width:42px;height:42px;border-radius:14px;background:var(--surface-hi2);
+    border:1px solid var(--outline)}
+  .dock span:nth-child(2){background:rgba(201,166,255,.18)}
+  .dock span:nth-child(3){background:rgba(255,156,192,.16)}
+
+  /* ---------- Secciones ---------- */
+  .sec{padding:clamp(56px,9vw,96px) 0}
+  .sec-head{max-width:560px;margin-bottom:48px}
+  .sec-eyebrow{font-family:'Outfit';font-weight:600;font-size:.8rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--secondary)}
+  .sec h2{font-family:'Outfit';font-weight:700;font-size:clamp(2rem,5vw,2.9rem);
+    letter-spacing:-.02em;line-height:1.05;margin:14px 0 0}
+  .sec h2 + p{color:var(--on-muted);margin-top:16px;font-size:1.08rem}
+
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:20px}
+  .card{background:var(--surface);border:1px solid var(--outline);border-radius:var(--r-md);
+    padding:30px 26px;transition:transform .35s var(--ease),border-color .35s,background .35s;position:relative;overflow:hidden}
+  .card:hover{transform:translateY(-6px);border-color:var(--outline-strong);background:var(--surface-hi)}
+  .card .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;margin-bottom:20px;
+    background:rgba(201,166,255,.12);border:1px solid var(--outline)}
+  .card .ic svg{width:26px;height:26px;stroke:var(--primary)}
+  .card:nth-child(2) .ic svg{stroke:var(--secondary)} .card:nth-child(2) .ic{background:rgba(255,156,192,.12)}
+  .card:nth-child(3) .ic svg{stroke:var(--tertiary)} .card:nth-child(3) .ic{background:rgba(138,217,213,.12)}
+  .card:nth-child(4) .ic svg{stroke:var(--primary)}
+  .card h3{font-family:'Outfit';font-weight:600;font-size:1.22rem;margin-bottom:8px}
+  .card p{color:var(--on-muted);font-size:.97rem}
+
+  /* Pasos de instalación (secuencia real -> numerar tiene sentido) */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:step}
+  .step{position:relative;padding-top:8px}
+  .step .num{font-family:'Outfit';font-weight:800;font-size:3rem;line-height:1;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.9}
+  .step h3{font-family:'Outfit';font-weight:600;font-size:1.18rem;margin:14px 0 8px}
+  .step p{color:var(--on-muted);font-size:.97rem}
+
+  /* CTA final */
+  .cta-final{text-align:center;background:linear-gradient(180deg,var(--surface-hi),var(--surface));
+    border:1px solid var(--outline);border-radius:var(--r-lg);padding:clamp(40px,7vw,72px) 28px}
+  .cta-final h2{font-family:'Outfit';font-weight:700;font-size:clamp(1.8rem,4.6vw,2.7rem);letter-spacing:-.02em}
+  .cta-final p{color:var(--on-muted);margin:14px auto 30px;max-width:46ch}
+  .cta-final .dl-btn{max-width:340px;margin:0 auto}
+
+  /* Footer */
+  footer{border-top:1px solid var(--outline);padding:40px 0;margin-top:40px}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    color:var(--on-dim);font-size:.9rem}
+  .foot .brand{font-size:1.05rem}
+
+  /* Toast */
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120%);
+    background:var(--surface-hi2);border:1px solid var(--outline-strong);color:var(--on);
+    padding:14px 22px;border-radius:var(--r-pill);font-family:'Outfit';font-weight:500;
+    display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);z-index:80;
+    transition:transform .5s var(--ease);max-width:90vw}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast svg{width:20px;height:20px;color:var(--ok)}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* Responsive */
+  @media (max-width:880px){
+    .hero{grid-template-columns:1fr;gap:44px;text-align:center}
+    .hero .eyebrow{margin:0 auto}
+    .lede{margin-left:auto;margin-right:auto}
+    .dl-card{margin:0 auto}
+    .chips{justify-content:center}
+    .device-stage{order:-1}
+    .steps{grid-template-columns:1fr;gap:30px}
+  }
+  @media (max-width:520px){
+    .nav__cta{display:none}
+    .dl-card{padding:20px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
 </style>
 </head>
 <body>
-<div class="bg"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
-<div class="grain"></div>
 
-<nav>
-  <a class="logo" href="#">
-    <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 7v10l8 5 8-5V7z"/><path d="M12 22V12"/><path d="m4 7 8 5 8-5"/></svg></span>
-    <span class="logo-name">Aura Store</span>
-  </a>
-  <span class="nav-pill"><span class="nav-dot"></span>En línea</span>
-</nav>
-
-<section class="hero">
-  <h1>El mejor software,<br><span class="grad">listo para vos.</span></h1>
-  <div class="metrics">
-    <div class="m"><div class="mv" id="cnt">0</div><div class="ml">Apps</div></div>
-    <div class="m"><div class="mv" style="color:var(--mint)">Gratis</div><div class="ml">Precio</div></div>
-    <div class="m"><div class="mv" style="color:var(--amber)">4.9★</div><div class="ml">Rating</div></div>
-  </div>
-</section>
-
-<div class="toolbar">
-  <label class="search">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input id="q" type="text" inputmode="search" autocomplete="off" placeholder="Buscar apps…" aria-label="Buscar apps">
-    <button class="search-clear" id="clear" type="button" aria-label="Borrar búsqueda">✕</button>
-  </label>
+<div class="field" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="grain"></div>
 </div>
 
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a href="#top" class="brand">
+      <img src="/Logos/koko.png" alt="" class="mark" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="mark-fallback">K</span>
+      KoKo
+    </a>
+    <a href="#descargar" class="nav__cta">Descargar</a>
+  </div>
+</nav>
 
-<div class="grid" id="grid"></div>
-<div id="toast"><span class="td"></span><span id="tmsg"></span></div>
+<main class="wrap" id="top">
 
-<footer><div class="f-inner"><div class="f-logo">Aura Store</div><div class="f-copy">© 2026 · Hecho con cariño</div></div></footer>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__copy">
+      <span class="eyebrow reveal"><span class="dot"></span>Aplicación para Android</span>
+      <h1 class="reveal">Conoce <span class="grad">KoKo</span></h1>
+      <p class="lede reveal">Descarga la última versión. Diseño Material, animaciones fluidas y una experiencia pensada para tu día a día.</p>
+
+      <div class="dl-card reveal" id="descargar">
+        <button class="dl-btn" id="dlBtn" aria-live="polite">
+          <span class="prog" id="prog"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          <span id="btnLabel">Descargar KoKo</span>
+        </button>
+
+        <div class="status" id="status">
+          <span class="ind"><span class="spin"></span></span>
+          <span id="statusText">Verificando disponibilidad…</span>
+        </div>
+
+        <div class="chips">
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 16V8a7 7 0 0114 0v8" stroke-linecap="round"/><circle cx="9" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r="1" fill="currentColor" stroke="none"/></svg>Android</span>
+          <span class="chip" id="sizeChip" style="display:none"></span>
+          <span class="chip">.apk</span>
+          <span class="chip">Gratis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="device-stage reveal">
+      <div class="device">
+        <div class="screen">
+          <span class="notch"></span>
+          <div class="top">
+            <img src="/Logos/koko.png" alt="Logo de KoKo" class="app-icon" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <span class="app-icon-fallback">K</span>
+            <span class="app-name">KoKo</span>
+          </div>
+          <div class="dock"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="sec">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">Por qué KoKo</span>
+      <h2>Hecha para sentirse bien</h2>
+      <p>Cada detalle sigue los principios de Material Design: color dinámico, formas suaves y movimiento con intención.</p>
+    </div>
+    <div class="features">
+      <div class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 12h18M12 3v18"/></svg></div>
+        <h3>Diseño Material You</h3>
+        <p>Superficies tonales, esquinas redondeadas y color que cobra vida en cada pantalla.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+        <h3>Rápida y ligera</h3>
+        <p>Animaciones suaves y un tamaño reducido. Abre, úsala y listo, sin esperas.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3 7.5-8 9-5-1.5-8-4.5-8-9V7l8-4z"/></svg></div>
+        <h3>Pensada en ti</h3>
+        <p>Sin ruido ni distracciones. Una interfaz clara que te deja ir directo a lo importante.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg></div>
+        <h3>Siempre al día</h3>
+        <p>Mejoras frecuentes y correcciones rápidas. KoKo evoluciona contigo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASOS -->
+  <section class="sec">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">Instalación</span>
+      <h2>Tres pasos y listo</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">01</div><h3>Descarga el APK</h3><p>Toca el botón de descarga y guarda <strong>KoKo.apk</strong> en tu dispositivo.</p></div>
+      <div class="step reveal"><div class="num">02</div><h3>Permite la instalación</h3><p>Si Android lo pide, activa «Instalar apps desconocidas» para tu navegador.</p></div>
+      <div class="step reveal"><div class="num">03</div><h3>Instala y abre</h3><p>Abre el archivo descargado, confirma y empieza a disfrutar de KoKo.</p></div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="sec">
+    <div class="cta-final reveal">
+      <h2>¿Listo para empezar?</h2>
+      <p>Descarga KoKo ahora y lleva el diseño Material a la palma de tu mano.</p>
+      <button class="dl-btn" id="dlBtn2">
+        <span class="prog" id="prog2"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        <span>Descargar KoKo</span>
+      </button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="brand">
+      <img src="/Logos/koko.png" alt="" class="mark" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="mark-fallback">K</span>
+      KoKo
+    </span>
+    <span>© 2026 KoKo · Hecho con cariño para Android.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastText">Descarga iniciada</span>
+</div>
 
 <script>
-const APPS=[
-  {n:'KoKo',c:'Extra',v:'v1.7.117',i:'logos/koko.png',f:'KoKo.apk',t:'premium'},
-  {n:'Camara',c:'Fotografía',v:'v19.0.1',i:'logos/Camara.png',f:'Camara.apk',t:'nuevo'},
-  {n:'Cleaner',c:'Utilidad',v:'v2.0.5',i:'logos/Cleaner.webp',f:'Cleaner.apk',t:'premium'},
-  {n:'WhaTup',c:'Social',v:'v1.8.0',i:'logos/Whatup.webp',f:'WhaTup.apk',t:'beta'}
-];
-const CL={premium:'cp',beta:'cb',nuevo:'cn'};
-const GL={premium:'gp',beta:'gb',nuevo:'gn'};
-const TL={premium:'Premium',beta:'Beta',nuevo:'Nuevo'};
-const grid=document.getElementById('grid');
-const cntEl=document.getElementById('cnt');
-const qEl=document.getElementById('q');
-const clearEl=document.getElementById('clear');
-let query='';
+  const APK_URL = 'KoKo.apk';
+  const statusEl  = document.getElementById('status');
+  const statusTxt = document.getElementById('statusText');
+  const ind       = statusEl.querySelector('.ind');
+  const sizeChip  = document.getElementById('sizeChip');
+  const btn       = document.getElementById('dlBtn');
+  const btnLabel  = document.getElementById('btnLabel');
 
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  let apkReady = false;
+  let apkSize  = null;
 
-function mkCard(app,i){
-  const a=document.createElement('a');
-  a.href=app.f;a.download=app.f;a.className='card';
-  a.style.animationDelay=(i*0.06)+'s';
-  const fb='https://ui-avatars.com/api/?name='+encodeURIComponent(app.n)+'&background=1e293b&color=38bdf8&bold=true&size=120';
-  a.innerHTML=
-    '<span class="chip '+CL[app.t]+'">'+TL[app.t]+'</span>'+
-    '<div class="icon-wrap"><div class="icon-glow '+GL[app.t]+'"></div>'+
-    '<img class="app-icon" src="'+esc(app.i)+'" alt="'+esc(app.n)+'" loading="lazy" onerror="this.onerror=null;this.src=\''+fb+'\'"></div>'+
-    '<div class="app-name">'+esc(app.n)+'</div>'+
-    '<div class="app-cat">'+esc(app.c)+'</div>'+
-    '<button class="btn" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Obtener</button>';
-  a.addEventListener('pointermove',e=>{
-    const r=a.getBoundingClientRect();
-    a.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
-    a.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
-  });
-  a.addEventListener('click',e=>{
-    e.preventDefault();
-    toast('Preparando descarga de '+app.n+'…');
-    setTimeout(()=>{
-      const d=document.createElement('a');
-      d.href=app.f;d.download=app.f;d.style.display='none';
-      document.body.appendChild(d);d.click();document.body.removeChild(d);
-    },400);
-  });
-  return a;
-}
+  const fmtSize = b => {
+    if(!b) return null;
+    const mb = b/1048576;
+    return mb >= 1 ? mb.toFixed(1)+' MB' : Math.round(b/1024)+' KB';
+  };
 
-function countUp(el,to){
-  const dur=700,start=performance.now();
-  function step(now){
-    const p=Math.min((now-start)/dur,1);
-    el.textContent=Math.round(to*(1-Math.pow(1-p,3)));
-    if(p<1)requestAnimationFrame(step);
+  const icons = {
+    spin:  '<span class="spin"></span>',
+    check: '<svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg>',
+    bad:   '<svg class="bad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>'
+  };
+
+  function setStatus(state){
+    statusEl.classList.remove('is-ok','is-bad');
+    if(state==='checking'){
+      ind.innerHTML = icons.spin;
+      statusTxt.textContent = 'Verificando disponibilidad…';
+      btn.disabled = true; btnLabel.textContent = 'Comprobando…';
+    }
+    else if(state==='ready'){
+      ind.innerHTML = icons.check;
+      statusEl.classList.add('is-ok');
+      const s = fmtSize(apkSize);
+      statusTxt.textContent = s ? 'Archivo verificado · listo para instalar' : 'Listo para instalar';
+      if(s){ sizeChip.textContent = s; sizeChip.style.display='inline-flex'; }
+      btn.disabled = false; btnLabel.textContent = 'Descargar KoKo';
+    }
+    else if(state==='unverified'){
+      ind.innerHTML = icons.check;
+      statusEl.classList.add('is-ok');
+      statusTxt.textContent = 'Listo para descargar';
+      btn.disabled = false; btnLabel.textContent = 'Descargar KoKo';
+    }
+    else if(state==='error'){
+      ind.innerHTML = icons.bad;
+      statusEl.classList.add('is-bad');
+      statusTxt.textContent = 'No se encontró el archivo. Inténtalo más tarde.';
+      btn.disabled = true; btnLabel.textContent = 'No disponible';
+    }
   }
-  requestAnimationFrame(step);
-}
 
-function render(){
-  const list=APPS.filter(a=>( a.n+' '+a.c).toLowerCase().includes(query));
-  countUp(cntEl,list.length);
-  grid.innerHTML='';
-  if(!list.length){
-    const d=document.createElement('div');
-    d.className='nores';
-    d.innerHTML='<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Nada por aquí. Probá con otro nombre.</span>';
-    grid.appendChild(d);
-    return;
+  // Verifica de verdad que el APK existe antes de permitir la descarga
+  async function verifyApk(){
+    setStatus('checking');
+    try{
+      const res = await fetch(APK_URL, {method:'HEAD', cache:'no-store'});
+      if(res.ok){
+        apkSize = parseInt(res.headers.get('content-length')) || null;
+        apkReady = true; setStatus('ready'); return;
+      }
+      throw new Error('not ok');
+    }catch(e){
+      // Algunos servidores no permiten HEAD: probamos con un rango mínimo
+      try{
+        const res = await fetch(APK_URL, {method:'GET', headers:{Range:'bytes=0-0'}, cache:'no-store'});
+        if(res.ok || res.status===206){
+          const cr = res.headers.get('content-range');
+          if(cr && cr.includes('/')) apkSize = parseInt(cr.split('/')[1]) || null;
+          apkReady = true; setStatus(apkSize?'ready':'unverified'); return;
+        }
+        throw new Error('bad status');
+      }catch(e2){
+        // Probablemente abierto en local (file://) o sin conexión:
+        // permitimos el intento de descarga pero sin confirmar tamaño.
+        apkReady = true; setStatus('unverified');
+      }
+    }
   }
-  list.forEach((app,i)=>grid.appendChild(mkCard(app,i)));
-}
 
-qEl.addEventListener('input',()=>{
-  query=qEl.value.trim().toLowerCase();
-  clearEl.classList.toggle('on',query.length>0);
-  render();
-});
-clearEl.addEventListener('click',()=>{qEl.value='';query='';clearEl.classList.remove('on');qEl.focus();render();});
+  function ripple(btnEl, ev){
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const rect = btnEl.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.width = r.style.height = size+'px';
+    r.style.left = (ev.clientX - rect.left - size/2)+'px';
+    r.style.top  = (ev.clientY - rect.top  - size/2)+'px';
+    btnEl.appendChild(r);
+    setTimeout(()=>r.remove(),600);
+  }
 
-let tt;
-function toast(msg){
-  const el=document.getElementById('toast');
-  document.getElementById('tmsg').textContent=msg;
-  el.classList.add('show');clearTimeout(tt);
-  tt=setTimeout(()=>el.classList.remove('show'),2800);
-}
+  const toast = document.getElementById('toast');
+  function showToast(msg){
+    document.getElementById('toastText').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 3200);
+  }
 
-render();
-document.addEventListener('contextmenu',e=>e.preventDefault());
+  function startDownload(btnEl, progId, ev){
+    if(ev) ripple(btnEl, ev);
+    if(!apkReady){ verifyApk(); return; }
+
+    // pequeña animación de progreso antes de disparar la descarga
+    const prog = document.getElementById(progId);
+    if(prog){
+      prog.style.width='0';
+      requestAnimationFrame(()=>{ prog.style.width='100%'; });
+      setTimeout(()=>{ prog.style.width='0'; }, 700);
+    }
+
+    const a = document.createElement('a');
+    a.href = APK_URL;
+    a.setAttribute('download','KoKo.apk');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    showToast('Descarga iniciada · revisa tus notificaciones');
+  }
+
+  btn.addEventListener('click', e => startDownload(btn, 'prog', e));
+  document.getElementById('dlBtn2').addEventListener('click', e => startDownload(document.getElementById('dlBtn2'), 'prog2', e));
+
+  // Nav sombra al hacer scroll
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 12));
+
+  // Reveal al hacer scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Verificar disponibilidad al cargar
+  verifyApk();
 </script>
 </body>
 </html>
