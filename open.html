@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KoKo — Abrir contenido</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: radial-gradient(1200px 600px at 50% -10%, #1d1430 0%, #0c0c12 60%);
+    color: #e6e6ee;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .card {
+    width: 100%; max-width: 420px; text-align: center;
+    background: #15151f; border: 1px solid #26263a; border-radius: 22px;
+    padding: 36px 26px 30px; box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  }
+  .logo {
+    font-size: 40px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px;
+    background: linear-gradient(90deg,#ff5e62,#ff9966);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  h1 { font-size: 18px; font-weight: 600; color: #fff; margin: 4px 0 6px; }
+  p { color: #a7a7b4; font-size: 14px; margin: 0 0 22px; }
+  .btn {
+    display: block; width: 100%; padding: 15px 18px; margin: 10px 0;
+    border: none; border-radius: 14px; font-size: 15px; font-weight: 700;
+    cursor: pointer; text-decoration: none;
+  }
+  .btn-primary { background: linear-gradient(90deg,#ff5e62,#ff9966); color: #1a0e0e; }
+  .btn-ghost { background: #20202c; color: #e6e6ee; border: 1px solid #2e2e3c; }
+  .spinner {
+    width: 34px; height: 34px; margin: 0 auto 18px; border-radius: 50%;
+    border: 3px solid #2e2e3c; border-top-color: #ff8a66; animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .foot { margin-top: 18px; font-size: 12px; color: #6f6f7d; }
+  .foot a { color: #9a9aa8; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">KoKo</div>
+    <div class="spinner"></div>
+    <h1 id="open-title">Abriendo en la app…</h1>
+    <p>Si tenés KoKo instalada, se abrirá sola. Si no, descargala:</p>
+    <a id="btn-open" class="btn btn-primary" href="#">Abrir en KoKo</a>
+    <a class="btn btn-ghost" href="/">Descargar la app</a>
+    <div class="foot">
+      <a href="/privacy">Política de Privacidad</a>
+    </div>
+  </div>
+
+<script>
+  (function () {
+    // Lee la ruta: /movie/<id>  o  /series/<id>
+    var path = location.pathname.replace(/^\/+|\/+$/g, "");
+    var parts = path.split("/");
+    var type = parts[0];                  // "movie" | "series"
+    var id = parts.slice(1).join("/");    // soporta ids con "/"
+
+    if ((type !== "movie" && type !== "series") || id.length === 0) {
+      // Ruta inesperada -> a la página de descarga
+      window.location.replace("/");
+      return;
+    }
+
+    // Deep link que entiende la app: koko://movie/<id> o koko://series/<id>
+    var deepLink = "koko://" + type + "/" + id;
+    document.getElementById("open-title").textContent =
+      "Abriendo " + (type === "movie" ? "esta película" : "esta serie") + "…";
+
+    var btnOpen = document.getElementById("btn-open");
+    btnOpen.href = deepLink;
+    btnOpen.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = deepLink;
+    });
+
+    // Intento automático de abrir la app al cargar.
+    setTimeout(function () { window.location.href = deepLink; }, 400);
+  })();
+</script>
+</body>
+</html>
