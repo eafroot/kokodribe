@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/movie/:id*", "destination": "/open.html" },
+    { "source": "/series/:id*", "destination": "/open.html" }
+  ]
+}
